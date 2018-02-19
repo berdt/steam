@@ -55,8 +55,8 @@ class SteamClient(CMClient, BuiltinBase):
     username = None                    #: username when logged on
     login_key = None                   #: can be used for subsequent logins (no 2FA code will be required)
 
-    def __init__(self):
-        CMClient.__init__(self)
+    def __init__(self, socksip=False):
+        CMClient.__init__(self, socksip)
 
         self._LOG = logging.getLogger("SteamClient")
         # register listners
