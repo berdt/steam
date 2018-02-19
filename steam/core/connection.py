@@ -7,6 +7,8 @@ from gevent import queue
 from gevent import event
 from gevent.select import select as gselect
 
+import socks
+
 logger = logging.getLogger("Connection")
 
 
@@ -15,7 +17,9 @@ class Connection(object):
     FMT = '<I4s'
     FMT_SIZE = struct.calcsize(FMT)
 
-    def __init__(self):
+    def __init__(self, socksip):
+        self.socksip = socksip
+        
         self.socket = None
         self.connected = False
         self.server_addr = None
@@ -33,7 +37,7 @@ class Connection(object):
         return self.socket.getsockname()[0]
 
     def connect(self, server_addr):
-        self._new_socket()
+        self._new_socket(self.socksip)
 
         logger.debug("Attempting connection to %s", str(server_addr))
 
@@ -133,8 +137,13 @@ class Connection(object):
 
 
 class TCPConnection(Connection):
-    def _new_socket(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def _new_socket(self, socksip):
+
+        if socksip:
+            self.socket = socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.set_proxy(socks.SOCKS5, socksip, 30001)
+        else:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def _connect(self, server_addr):
         self.socket.connect(server_addr)
