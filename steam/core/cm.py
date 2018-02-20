@@ -75,12 +75,12 @@ class CMClient(EventEmitter):
     _heartbeat_loop = None
     _LOG = None
 
-    def __init__(self, protocol=PROTOCOL_TCP):
+    def __init__(self, socksip, protocol=PROTOCOL_TCP):
         self._LOG = logging.getLogger("CMClient")
         self.cm_servers = CMServerList()
 
         if protocol == CMClient.PROTOCOL_TCP:
-            self.connection = TCPConnection()
+            self.connection = TCPConnection(socksip)
         else:
             raise ValueError("Only TCP is supported")
 
