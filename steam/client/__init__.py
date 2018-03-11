@@ -580,8 +580,7 @@ class SteamClient(CMClient, BuiltinBase):
             
     def run_forever(self, sleepTime):
 
-        while True:
-            self.sleep(sleepTime)
+         self.sleep(sleepTime)
 
     def cli_login(self, username='', password=''):
         """Generates CLI prompts to complete the login process
