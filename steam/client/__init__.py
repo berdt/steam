@@ -578,7 +578,7 @@ class SteamClient(CMClient, BuiltinBase):
         while True:
             self.sleep(300)
             
-    def run_forever(self, sleepTime):
+    def run_for(self, sleepTime):
 
          self.sleep(sleepTime)
 
